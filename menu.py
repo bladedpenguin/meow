@@ -59,38 +59,3 @@ class Meow(pg.sprite.Sprite):
     def draw(self, screen):
         screen.blit(self.surf, (500, 100))
 
-class TextBox(pg.sprite.Sprite):
-    """allow the user to enter text and do something after they do."""
-
-    def __init__(self):
-        super(TextBox, self).__init__()
-        self.text = ''
-        self.width = 200
-        self.position = (320 - self.width/2, 350)
-        # you should replace this callback with something else
-        self.callback = lambda blah: print('!! ' + blah + ' !!')
-        self.redraw()
-
-    def draw(self, screen):
-        """draw the textbox on the given surfaces"""
-        screen.blit(self.surf, self.position)
-
-    def redraw(self):
-        """draw the text and stuff onto the surface"""
-        self.surf = pg.surface.Surface((self.width, 32))
-        self.surf.fill((32, 32, 32))
-        rendered_text = FONT.render(self.text, False, (192, 192, 255))
-        self.surf.blit(rendered_text, (4, 4))
-
-    def handle_event(self, event):
-        """deal with incoming keypresses"""
-        if event.type != pg.KEYDOWN:
-            raise Exception('what are you doing textbox cannot handle this event')
-        if event.key == pg.K_RETURN:
-            self.callback(self.text)
-            self.text = ''
-        elif event.key == pg.K_BACKSPACE:
-            self.text = self.text[:-1]
-        else:
-            self.text += event.unicode
-        self.redraw()

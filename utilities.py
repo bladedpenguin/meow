@@ -18,7 +18,7 @@ def multiline(text, color=(254, 255, 255), line_length=80):
 
             while len(words) > 0 and len(finished_line) + len(words[-1]) < line_length:
                 finished_line += ' ' + words.pop(0)
-            print(finished_line)  # debug
+            # print(finished_line)  # debug
             # render the line and tack it onto the end of finished_lines
             finished_lines.append(FONT.render(finished_line, False, color))
     # ok we have a list of surfaces with the lines written on them
