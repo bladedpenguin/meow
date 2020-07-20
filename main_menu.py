@@ -9,6 +9,7 @@ from utilities import multiline
 
 class MainMenu(menu.Menu):
     """main menu"""
+
     def __init__(self):
         menu.Menu.__init__(self)
         self.options = ['1. Start!', '2. ???', '3. Quit']
@@ -16,19 +17,26 @@ class MainMenu(menu.Menu):
         self.text_box = TextBox()
         self.text_box.callback = self.process_text
         self.result_surf = None
+
     def handle_events(self, events):
         for event in events:
             if event.type == pg.KEYDOWN:
                 self.text_box.handle_event(event)
+
     def draw(self, screen):
         menu.Menu.draw(self, screen)
         self.text_box.draw(screen)
         if self.result_surf is not None:
-            screen.blit(self.result_surf, (0, 0))
+            #center results on the right of the screen
+            position = (self.surf.get_width() - self.result_surf.get_width(),
+                        int(self.surf.get_height()/2 - self.result_surf.get_height()/2))
+            screen.blit(self.result_surf, position)
+
     def process_text(self, text):
         """process the text the user entered as a menu selection"""
+        self.result_surf = None  # clear the result from last time
         if text == '1':
-            print('yeah buddy lets play')
+            self.result_surf = multiline('Woo! lets play', line_length=30)
         elif text == '2':
             lore = Lore().bake()
             lore.old_screen = self
@@ -38,5 +46,4 @@ class MainMenu(menu.Menu):
             pg.event.post(pg.event.Event(pg.QUIT))
         else:
             print("wrong choice lol")
-            self.result_surf = multiline("wrong choice lol")
-
+            self.result_surf = multiline("wrong choice lol", line_length=30)
